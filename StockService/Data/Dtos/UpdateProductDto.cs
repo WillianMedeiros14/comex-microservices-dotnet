@@ -1,13 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace StockService.Models
+namespace StockService.Data.Dtos
 {
-    public class Product
+    public class UpdateProductDto
     {
-        [Key]
-        [Required]
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "O Nome do produto é obrigatório")]
         [MaxLength(100, ErrorMessage = "O tamanho do nome não pode exceder 100 caracteres")]
         public string Name { get; set; }
@@ -25,6 +21,5 @@ namespace StockService.Models
 
         [Required(ErrorMessage = "O campo de CategoriaId é obrigatório.")]
         public int CategoryId { get; set; }
-        public virtual Category Category { get; set; }
     }
 }
