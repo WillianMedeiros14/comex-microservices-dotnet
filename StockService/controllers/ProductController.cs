@@ -24,7 +24,7 @@ public class ProductController : ControllerBase
     /// <summary>
     /// Adiciona um produto ao banco de dados
     /// </summary>
-    /// <param name="CreateProductDto">Objeto com os campos necessários para criação de um produto</param>
+    /// <param name="productDto">Objeto com os campos necessários para criação de um produto</param>
     /// <returns>IActionResult</returns>
     /// <response code="201">Caso inserção seja feita com sucesso</response>
     /// <response code="404">Caso a categoria não seja encontrada</response>
@@ -86,7 +86,7 @@ public class ProductController : ControllerBase
     /// Atualizar um produto por id do banco de dados
     /// </summary>
     /// <param name="id">O ID do produto a ser atualizado</param>
-    /// <param name="UpdateProductDto">Objeto com os campos necessários para atualização de um produto</param>
+    /// <param name="productDto">Objeto com os campos necessários para atualização de um produto</param>
     /// <returns>IActionResult</returns>
     /// <response code="204">Caso atualização seja feita com sucesso</response>
     /// <response code="404">Caso o produto não seja encontrado</response>
