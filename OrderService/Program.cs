@@ -3,6 +3,8 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using OrderService.Data;
+using OrderService.ItemServiceHttpClient;
+using StockService.ItemServiceHttpClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +16,7 @@ builder.Services.AddDbContext<OrderContext>(opts =>
 
 // builder.Services.AddSingleton<IRabbitMqClient, RabbitMqClient>();
 
-// builder.Services.AddHttpClient<IOrderServiceHttpClient, OrderServiceHttpClient>();
+builder.Services.AddHttpClient<IStockServiceHttpClient, StockServiceHttpClient>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

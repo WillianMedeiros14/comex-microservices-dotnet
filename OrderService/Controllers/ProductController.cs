@@ -6,6 +6,7 @@ using AutoMapper.QueryableExtensions;
 using OrderService.Data;
 using OrderService.Data.Dtos;
 using System.Text.Json;
+using OrderService.ItemServiceHttpClient;
 
 namespace OrderService.Controllers;
 
@@ -15,12 +16,14 @@ public class ProductController : ControllerBase
 {
     private OrderContext _context;
     private IMapper _mapper;
+    private readonly IStockServiceHttpClient _stockServiceHttpClient;
 
-    public ProductController(OrderContext context, IMapper mapper)
+
+    public ProductController(OrderContext context, IMapper mapper, IStockServiceHttpClient stockServiceHttpClient = null)
     {
         _context = context;
         _mapper = mapper;
-
+        _stockServiceHttpClient = stockServiceHttpClient;
     }
 
     [HttpPost]
@@ -31,15 +34,11 @@ public class ProductController : ControllerBase
         return Ok();
     }
 
-    
+
     [HttpGet]
-    public IEnumerable<ReadProductDto> GetAllProducts([FromQuery] int skip = 0, [FromQuery] int take = 50)
+    public async Task<IActionResult> GetAvailableProductsAsync([FromQuery] int skip = 0, [FromQuery] int take = 50)
     {
-        return _context.Products
-            .OrderBy(p => p.Id)
-            .Skip(skip)
-            .Take(take)
-            .ProjectTo<ReadProductDto>(_mapper.ConfigurationProvider)
-            .ToList();
+        var products = await _stockServiceHttpClient.GetAllProducts(skip, take);
+        return Ok(products);
     }
 }
