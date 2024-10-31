@@ -31,4 +31,15 @@ public class ProductController : ControllerBase
         return Ok();
     }
 
+    
+    [HttpGet]
+    public IEnumerable<ReadProductDto> GetAllProducts([FromQuery] int skip = 0, [FromQuery] int take = 50)
+    {
+        return _context.Products
+            .OrderBy(p => p.Id)
+            .Skip(skip)
+            .Take(take)
+            .ProjectTo<ReadProductDto>(_mapper.ConfigurationProvider)
+            .ToList();
+    }
 }
