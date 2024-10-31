@@ -41,4 +41,20 @@ public class ProductController : ControllerBase
         var products = await _stockServiceHttpClient.GetAllProducts(skip, take);
         return Ok(products);
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetProductData(int id)
+    {
+        try
+        {
+            var product = await _stockServiceHttpClient.GetProductById(id);
+            return Ok(product);
+
+        }
+        catch (System.Exception e)
+        {
+
+            return BadRequest(e.Message);
+        }
+    }
 }

@@ -3,6 +3,7 @@ using System.Text;
 using OrderService.ItemServiceHttpClient;
 using OrderService.Data.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace StockService.ItemServiceHttpClient
 {
@@ -39,5 +40,32 @@ namespace StockService.ItemServiceHttpClient
 
             return new List<ReadProductDto>();
         }
+
+        public async Task<ReadProductDto> GetProductById(int id)
+        {
+            var url = $"{_configuration["StockService"]}/Product/{id}";
+
+            var response = await _client.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var product = JsonSerializer.Deserialize<ReadProductDto>(jsonResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                return product;
+            }
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new Exception($"Produto com ID {id} não encontrado.");
+            }
+
+
+            throw new Exception($"Falha ao buscar o produto com ID {id}: {response}");
+        }
+
     }
 }
