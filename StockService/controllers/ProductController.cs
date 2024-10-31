@@ -6,7 +6,7 @@ using StockService.Data;
 using StockService.Data.Dtos;
 using StockService.Models;
 using StockService.ItemServiceHttpClient;
-using StockService.RabbitMqClient;
+// using StockService.RabbitMqClient;
 
 namespace StockService.Controllers;
 
@@ -18,14 +18,14 @@ public class ProductController : ControllerBase
     private IMapper _mapper;
 
     private IOrderServiceHttpClient _orderServiceHttpClient;
-    private IRabbitMqClient _rabbitMqClient;
+    // private IRabbitMqClient _rabbitMqClient;
 
-    public ProductController(ProductContext context, IMapper mapper, IOrderServiceHttpClient orderServiceHttpClient, IRabbitMqClient rabbitMqClient)
+    public ProductController(ProductContext context, IMapper mapper, IOrderServiceHttpClient orderServiceHttpClient)
     {
         _context = context;
         _mapper = mapper;
         _orderServiceHttpClient = orderServiceHttpClient;
-        _rabbitMqClient = rabbitMqClient;
+        // _rabbitMqClient = rabbitMqClient;
     }
 
     /// <summary>

@@ -13,7 +13,7 @@ builder.Services.AddDbContext<ProductContext>(opts =>
     opts.UseLazyLoadingProxies().UseNpgsql(connectionString));
 
 
-builder.Services.AddSingleton<IRabbitMqClient, RabbitMqClient>();
+// builder.Services.AddSingleton<IRabbitMqClient, RabbitMqClient>();
 
 builder.Services.AddHttpClient<IOrderServiceHttpClient, OrderServiceHttpClient>();
 
