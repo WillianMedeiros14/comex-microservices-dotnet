@@ -3,12 +3,19 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using StockService.Data;
+using StockService.ItemServiceHttpClient;
+using StockService.RabbitMqClient;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("ProductConnection");
 
 builder.Services.AddDbContext<ProductContext>(opts =>
     opts.UseLazyLoadingProxies().UseNpgsql(connectionString));
+
+
+builder.Services.AddSingleton<IRabbitMqClient, RabbitMqClient>();
+
+builder.Services.AddHttpClient<IOrderServiceHttpClient, OrderServiceHttpClient>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

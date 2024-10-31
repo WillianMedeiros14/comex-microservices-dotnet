@@ -5,6 +5,8 @@ using AutoMapper.QueryableExtensions;
 using StockService.Data;
 using StockService.Data.Dtos;
 using StockService.Models;
+using StockService.ItemServiceHttpClient;
+using StockService.RabbitMqClient;
 
 namespace StockService.Controllers;
 
@@ -15,10 +17,15 @@ public class ProductController : ControllerBase
     private ProductContext _context;
     private IMapper _mapper;
 
-    public ProductController(ProductContext context, IMapper mapper)
+    private IOrderServiceHttpClient _orderServiceHttpClient;
+    private IRabbitMqClient _rabbitMqClient;
+
+    public ProductController(ProductContext context, IMapper mapper, IOrderServiceHttpClient orderServiceHttpClient, IRabbitMqClient rabbitMqClient)
     {
         _context = context;
         _mapper = mapper;
+        _orderServiceHttpClient = orderServiceHttpClient;
+        _rabbitMqClient = rabbitMqClient;
     }
 
     /// <summary>
@@ -44,6 +51,9 @@ public class ProductController : ControllerBase
         _context.SaveChanges();
 
         var productResponseDto = _mapper.Map<ProductResponseDto>(product);
+        var readProductDto = _mapper.Map<ReadProductDto>(product);
+
+        _orderServiceHttpClient.SendProductToOrderService(readProductDto);
 
         return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, productResponseDto);
     }
