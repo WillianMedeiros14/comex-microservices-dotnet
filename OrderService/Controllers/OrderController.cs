@@ -49,7 +49,6 @@ namespace OrderService.Controllers
                 OrderItems = new List<OrderItem>()
             };
 
-            var dataSendUpdateProduct = new List<UpdateProductQuantityInStockDto>();
 
             foreach (var itemDto in orderCreateDto.OrderItems)
             {
@@ -79,21 +78,6 @@ namespace OrderService.Controllers
             await _orderRepository.SaveChangesAsync();
 
             var orderReadDto = _mapper.Map<OrderReadDTO>(order);
-
-            foreach (var itemDto in orderReadDto.OrderItems)
-            {
-                dataSendUpdateProduct.Add(
-                    new UpdateProductQuantityInStockDto
-                    {
-                        Amount = itemDto.Amount,
-                        ProductId = itemDto.ProductId,
-                        OrderId = order.Id
-                    }
-                );
-            }
-
-
-            _rabbitMqClient.UpdateProductQuantityInStock(dataSendUpdateProduct);
 
             return CreatedAtAction(nameof(GetOrderById), new { id = orderReadDto.Id }, orderReadDto);
         }
@@ -125,6 +109,52 @@ namespace OrderService.Controllers
             var orderReadDtos = _mapper.Map<IEnumerable<OrderReadDTO>>(orders);
 
             return Ok(orderReadDtos);
+        }
+
+
+        [HttpPut("/updateStatusOrderById")]
+        public async Task<ActionResult<OrderReadDTO>> UpdateStatusOrderById(UpdateStatusOrderByIdDto updateStatusOrderByIdDto)
+        {
+            if (string.IsNullOrWhiteSpace(updateStatusOrderByIdDto.Status.ToString()))
+            {
+                return BadRequest("Status não pode ser vazio.");
+            }
+
+            if (!Enum.TryParse<OrderStatus>(updateStatusOrderByIdDto.Status.ToString(), true, out var statusEnum))
+            {
+                return BadRequest("Status inválido.");
+            }
+
+            var order = await _orderRepository.UpdateStatusOrderById(updateStatusOrderByIdDto.OrderId, statusEnum);
+            var orderReadDto = _mapper.Map<OrderReadDTO>(order);
+
+            if (updateStatusOrderByIdDto.Status == OrderStatus.Concluido)
+            {
+                await _orderRepository.SaveChangesAsync();
+
+                var dataSendUpdateProduct = new List<UpdateProductQuantityInStockDto>();
+
+                foreach (var itemDto in orderReadDto.OrderItems)
+                {
+                    dataSendUpdateProduct.Add(
+                        new UpdateProductQuantityInStockDto
+                        {
+                            Amount = itemDto.Amount,
+                            ProductId = itemDto.ProductId,
+                            OrderId = order.Id
+                        }
+                    );
+                }
+
+                _rabbitMqClient.UpdateProductQuantityInStock(dataSendUpdateProduct);
+
+                return Ok(orderReadDto);
+            }
+            else
+            {
+                await _orderRepository.SaveChangesAsync();
+                return Ok(orderReadDto);
+            }
         }
     }
 }

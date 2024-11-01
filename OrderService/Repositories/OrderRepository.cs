@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using OrderService.Data;
+using OrderService.Enums;
 using OrderService.Models;
 
 namespace OrderService.Repository
@@ -34,6 +35,20 @@ namespace OrderService.Repository
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<Order> UpdateStatusOrderById(int id, OrderStatus status)
+        {
+            var order = await _context.Orders.FindAsync(id);
+
+            if (order == null)
+            {
+                throw new KeyNotFoundException($"Pedido com ID {id} não encontrado.");
+            }
+
+            order.Status = status;
+
+            return order;
         }
     }
 }

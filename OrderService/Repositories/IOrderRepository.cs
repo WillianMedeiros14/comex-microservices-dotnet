@@ -1,4 +1,5 @@
 
+using OrderService.Enums;
 using OrderService.Models;
 
 namespace OrderService.Repository
@@ -9,5 +10,7 @@ namespace OrderService.Repository
         Task SaveChangesAsync();
         Task<IEnumerable<Order>> GetAllOrders();
         Task<Order> GetOrderById(int id);
+        Task<Order> UpdateStatusOrderById(int id, OrderStatus Status);
+
     }
 }
