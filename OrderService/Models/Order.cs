@@ -1,6 +1,6 @@
-using System;
-using System.Collections.Generic;
+
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using OrderService.Enums;
 
 namespace OrderService.Models
@@ -16,6 +16,7 @@ namespace OrderService.Models
 
         [Required]
         [MaxLength(20)]
+        [Column(TypeName = "varchar(20)")]
         public OrderStatus Status { get; set; } = OrderStatus.Pendente;
 
         public double Total { get; set; }

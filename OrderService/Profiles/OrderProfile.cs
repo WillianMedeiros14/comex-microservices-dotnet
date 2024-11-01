@@ -10,7 +10,9 @@ namespace OrderService.Profiles
         {
             CreateMap<OrderCreateDTO, Order>();
             CreateMap<OrderItemCreateDTO, OrderItem>();
-            CreateMap<Order, OrderReadDTO>();
+            CreateMap<Order, OrderReadDTO>()
+                        .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+
             CreateMap<OrderItem, OrderItemReadDTO>();
         }
     }

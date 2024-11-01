@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OrderService.Data.Dtos.Product;
 using OrderService.DTOs.Order;
+using OrderService.Enums;
 using OrderService.ItemServiceHttpClient;
 using OrderService.Models;
 using OrderService.Repository;
@@ -26,10 +27,22 @@ namespace OrderService.Controllers
         [HttpPost]
         public async Task<ActionResult<OrderReadDTO>> CreateOrder(OrderCreateDTO orderCreateDto)
         {
+
+            if (string.IsNullOrWhiteSpace(orderCreateDto.Status.ToString()))
+            {
+                return BadRequest("Status não pode ser vazio.");
+            }
+
+            if (!Enum.TryParse<OrderStatus>(orderCreateDto.Status.ToString(), true, out var statusEnum))
+            {
+                return BadRequest("Status inválido.");
+            }
+
+
             Order order = new Order
             {
                 CreationDate = orderCreateDto.CreationDate,
-                Status = orderCreateDto.Status,
+                Status = statusEnum,
                 OrderItems = new List<OrderItem>()
             };
 

@@ -6,7 +6,7 @@ namespace OrderService.DTOs.Order
     {
         public int Id { get; set; }
         public DateTime CreationDate { get; set; }
-        public OrderStatus Status { get; set; }
+        public string Status { get; set; }
         public double Total { get; set; }
         public ICollection<OrderItemReadDTO> OrderItems { get; set; }
     }
