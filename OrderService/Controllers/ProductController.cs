@@ -7,6 +7,7 @@ using OrderService.Data;
 using OrderService.Data.Dtos;
 using System.Text.Json;
 using OrderService.ItemServiceHttpClient;
+using OrderService.Data.Dtos.Product;
 
 namespace OrderService.Controllers;
 

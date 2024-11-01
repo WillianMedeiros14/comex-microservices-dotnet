@@ -4,6 +4,7 @@ using OrderService.ItemServiceHttpClient;
 using OrderService.Data.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using OrderService.Data.Dtos.Product;
 
 namespace StockService.ItemServiceHttpClient
 {
@@ -66,6 +67,5 @@ namespace StockService.ItemServiceHttpClient
 
             throw new Exception($"Falha ao buscar o produto com ID {id}: {response}");
         }
-
     }
 }

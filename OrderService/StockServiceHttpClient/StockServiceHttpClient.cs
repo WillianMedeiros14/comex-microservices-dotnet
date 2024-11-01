@@ -1,4 +1,4 @@
-﻿using OrderService.Data.Dtos;
+﻿using OrderService.Data.Dtos.Product;
 
 
 namespace OrderService.ItemServiceHttpClient

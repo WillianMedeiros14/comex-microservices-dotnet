@@ -13,13 +13,7 @@ public class OrderContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
-        modelBuilder.Entity<Category>()
-            .HasMany(categoria => categoria.Products)
-            .WithOne(produto => produto.Category)
-            .HasForeignKey(produto => produto.CategoryId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
-
-    public DbSet<Product> Products { get; set; }
-    public DbSet<Category> Categories { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
 }

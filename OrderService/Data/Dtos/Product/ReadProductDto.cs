@@ -1,5 +1,7 @@
 
-namespace OrderService.Data.Dtos;
+using StockService.Data.Dtos.Category;
+
+namespace OrderService.Data.Dtos.Product;
 
 public class ReadProductDto
 {

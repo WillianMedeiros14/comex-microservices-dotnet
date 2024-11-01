@@ -1,5 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-namespace OrderService.Data.Dtos
+namespace StockService.Data.Dtos.Category
 {
     public class ReadCategoryDto
     {
