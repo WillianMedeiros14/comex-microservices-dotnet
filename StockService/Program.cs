@@ -14,10 +14,11 @@ var connectionString = builder.Configuration.GetConnectionString("ProductConnect
 builder.Services.AddDbContext<ProductContext>(opts =>
     opts.UseLazyLoadingProxies().UseNpgsql(connectionString));
 
-builder.Services.AddHostedService<RabbitMqSubscriber>();
 
 builder.Services.AddHttpClient<IOrderServiceHttpClient, OrderServiceHttpClient>();
 builder.Services.AddSingleton<IProcessaEvento, ProcessaEvento>();
+
+builder.Services.AddHostedService<RabbitMqSubscriber>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
