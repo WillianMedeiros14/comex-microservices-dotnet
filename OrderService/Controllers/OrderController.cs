@@ -1,10 +1,12 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OrderService.Data.Dtos.Product;
+using OrderService.Data.Dtos.RabbitMq;
 using OrderService.DTOs.Order;
 using OrderService.Enums;
 using OrderService.ItemServiceHttpClient;
 using OrderService.Models;
+using OrderService.RabbitMqClient;
 using OrderService.Repository;
 
 namespace OrderService.Controllers
@@ -16,12 +18,14 @@ namespace OrderService.Controllers
         private readonly IOrderRepository _orderRepository;
         private readonly IStockServiceHttpClient _stockServiceHttpClient;
         private readonly IMapper _mapper;
+        private IRabbitMqClient _rabbitMqClient;
 
-        public OrderController(IOrderRepository orderRepository, IStockServiceHttpClient stockServiceHttpClient, IMapper mapper)
+        public OrderController(IOrderRepository orderRepository, IStockServiceHttpClient stockServiceHttpClient, IMapper mapper, IRabbitMqClient rabbitMqClient)
         {
             _orderRepository = orderRepository;
             _stockServiceHttpClient = stockServiceHttpClient;
             _mapper = mapper;
+            _rabbitMqClient = rabbitMqClient;
         }
 
         [HttpPost]
@@ -38,7 +42,6 @@ namespace OrderService.Controllers
                 return BadRequest("Status inválido.");
             }
 
-
             Order order = new Order
             {
                 CreationDate = orderCreateDto.CreationDate,
@@ -46,6 +49,7 @@ namespace OrderService.Controllers
                 OrderItems = new List<OrderItem>()
             };
 
+            var dataSendUpdateProduct = new List<UpdateProductQuantityInStockDto>();
 
             foreach (var itemDto in orderCreateDto.OrderItems)
             {
@@ -69,13 +73,28 @@ namespace OrderService.Controllers
                 });
             }
 
-
             order.Total = order.OrderItems.Sum(i => i.Total);
 
             await _orderRepository.CreateOrder(order);
             await _orderRepository.SaveChangesAsync();
 
             var orderReadDto = _mapper.Map<OrderReadDTO>(order);
+
+            foreach (var itemDto in orderReadDto.OrderItems)
+            {
+                dataSendUpdateProduct.Add(
+                    new UpdateProductQuantityInStockDto
+                    {
+                        Amount = itemDto.Amount,
+                        ProductId = itemDto.ProductId,
+                        OrderId = order.Id
+                    }
+                );
+            }
+
+
+            _rabbitMqClient.UpdateProductQuantityInStock(dataSendUpdateProduct);
+
             return CreatedAtAction(nameof(GetOrderById), new { id = orderReadDto.Id }, orderReadDto);
         }
 

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using OrderService.Data;
 using OrderService.ItemServiceHttpClient;
+using OrderService.RabbitMqClient;
 using OrderService.Repository;
 using StockService.ItemServiceHttpClient;
 
@@ -15,7 +16,7 @@ builder.Services.AddDbContext<OrderContext>(opts =>
     opts.UseLazyLoadingProxies().UseNpgsql(connectionString));
 
 
-// builder.Services.AddSingleton<IRabbitMqClient, RabbitMqClient>();
+builder.Services.AddSingleton<IRabbitMqClient, RabbitMqClient>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 builder.Services.AddHttpClient<IStockServiceHttpClient, StockServiceHttpClient>();
