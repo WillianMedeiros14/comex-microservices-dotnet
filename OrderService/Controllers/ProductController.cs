@@ -1,10 +1,6 @@
 using AutoMapper;
-
 using Microsoft.AspNetCore.Mvc;
-using AutoMapper.QueryableExtensions;
-
 using OrderService.Data;
-using OrderService.Data.Dtos;
 using System.Text.Json;
 using OrderService.ItemServiceHttpClient;
 using OrderService.Data.Dtos.Product;
@@ -54,7 +50,6 @@ public class ProductController : ControllerBase
         }
         catch (System.Exception e)
         {
-
             return BadRequest(e.Message);
         }
     }
