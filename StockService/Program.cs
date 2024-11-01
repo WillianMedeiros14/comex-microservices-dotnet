@@ -6,6 +6,7 @@ using StockService.Data;
 using StockService.EventProcessor;
 using StockService.ItemServiceHttpClient;
 using StockService.RabbitMqClient;
+using StockService.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,7 @@ builder.Services.AddDbContext<ProductContext>(opts =>
 
 builder.Services.AddHttpClient<IOrderServiceHttpClient, OrderServiceHttpClient>();
 builder.Services.AddSingleton<IProcessaEvento, ProcessaEvento>();
-
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddHostedService<RabbitMqSubscriber>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
