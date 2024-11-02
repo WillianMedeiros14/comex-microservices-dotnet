@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using StockService.Data;
 using StockService.EventProcessor;
 using StockService.ItemServiceHttpClient;
+using StockService.Models;
 using StockService.RabbitMqClient;
 using StockService.Repository;
 
@@ -51,6 +52,13 @@ app.MapGet("/", () =>
 
 app.UseHttpsRedirection();
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ProductContext>();
+    db.Database.Migrate();
+}
+
 
 app.Run();
 
