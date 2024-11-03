@@ -80,3 +80,7 @@ services:
 networks:
   comex-service-bridge:
     driver: bridge
+
+volumes:
+  postgres-data:
+
