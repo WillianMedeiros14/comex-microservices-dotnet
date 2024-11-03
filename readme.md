@@ -32,7 +32,7 @@ Gestão de Estoque:
 - Cada serviço possui seu próprio banco de dados SQL, mas ambos estão na mesma instância.
 - Docker é usado para orquestrar os serviços e RabbitMQ.
 
-### Resultado Esperado
+### Resultado
 
 - Microsserviço de Pedido: Responsável pela criação de pedidos e validação da disponibilidade de estoque.
 - Microsserviço de Estoque: Responsável por manter e atualizar a quantidade de itens em estoque.
