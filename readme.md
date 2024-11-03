@@ -43,7 +43,7 @@ Gestão de Estoque:
 
 As principais tecnologias e bibliotecas utilizadas no projeto incluem:
 
-- **.NET Core 6.0**
+- **.NET Core 8.0**
 - **PostgreSQL**
 - **Swagger**
 - **Docker e Docker Compose**
