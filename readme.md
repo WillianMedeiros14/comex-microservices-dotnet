@@ -39,6 +39,8 @@ Gestão de Estoque:
 - Comunicação entre os microsserviços utilizando HTTP e RabbitMQ.
 - Implementação de uma arquitetura que permite a escalabilidade e manutenção dos serviços.
 
+---
+
 ## Tecnologias Utilizadas 🛠️
 
 As principais tecnologias e bibliotecas utilizadas no projeto incluem:
@@ -60,6 +62,8 @@ As principais tecnologias e bibliotecas utilizadas no projeto incluem:
    cd comex-microservices-dotnet
    ```
 
+---
+
 ## Rodando a Aplicação ▶️
 
 - Esteja na raiz do projeto e rode o comando abaixo:
@@ -67,6 +71,8 @@ As principais tecnologias e bibliotecas utilizadas no projeto incluem:
   ```bash
   docker compose up
   ```
+
+---
 
 ## Acesso as aplicações
 
