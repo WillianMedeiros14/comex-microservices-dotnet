@@ -19,6 +19,11 @@ namespace StockService.Data.Dtos
         [Range(1, int.MaxValue, ErrorMessage = "A quantidade deve ser maior que 0")]
         public int AvailableQuantity { get; set; }
 
+
+        [Required(ErrorMessage = "A imagem do produto é obrigatório")]
+        public string image { get; set; }
+
+
         [Required(ErrorMessage = "O campo de CategoriaId é obrigatório.")]
         public int CategoryId { get; set; }
     }

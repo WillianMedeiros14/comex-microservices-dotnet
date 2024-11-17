@@ -12,6 +12,8 @@ public class ReadProductDto
 
     public int AvailableQuantity { get; set; }
 
+    public string image { get; set; }
+
     public int CategoryId { get; set; }
 
     public ReadCategoryDto Category { get; set; }
