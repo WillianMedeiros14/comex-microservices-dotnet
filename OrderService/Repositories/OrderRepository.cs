@@ -22,6 +22,11 @@ namespace OrderService.Repository
             await _context.Orders.AddAsync(order);
         }
 
+        public async Task DeleteOrderById(Order order)
+        {
+            _context.Orders.Remove(order);
+        }
+
         public async Task<IEnumerable<Order>> GetAllOrders()
         {
             return await _context.Orders.Include(o => o.OrderItems).ToListAsync();

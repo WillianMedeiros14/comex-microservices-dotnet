@@ -22,6 +22,12 @@ namespace OrderService.Models
         public double Total => Amount * UnitPrice;
 
         [Required]
+        public string NameProduct { get; set; }
+
+        [Required]
+        public string ImageProduct { get; set; }
+
+        [Required]
         public int OrderId { get; set; }
         public virtual Order Order { get; set; }
     }

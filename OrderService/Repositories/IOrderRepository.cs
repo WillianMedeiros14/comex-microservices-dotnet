@@ -11,6 +11,6 @@ namespace OrderService.Repository
         Task<IEnumerable<Order>> GetAllOrders();
         Task<Order> GetOrderById(int id);
         Task<Order> UpdateStatusOrderById(int id, OrderStatus Status);
-
+        Task DeleteOrderById(Order order);
     }
 }

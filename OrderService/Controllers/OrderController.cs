@@ -68,7 +68,9 @@ namespace OrderService.Controllers
                 {
                     ProductId = itemDto.ProductId,
                     Amount = itemDto.Amount,
-                    UnitPrice = product.Price
+                    UnitPrice = product.Price,
+                    NameProduct = product.Name,
+                    ImageProduct = product.Image
                 });
             }
 
@@ -155,6 +157,19 @@ namespace OrderService.Controllers
                 await _orderRepository.SaveChangesAsync();
                 return Ok(orderReadDto);
             }
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            var order = await _orderRepository.GetOrderById(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            await _orderRepository.DeleteOrderById(order);
+            await _orderRepository.SaveChangesAsync();
+            return NoContent();
         }
     }
 }
